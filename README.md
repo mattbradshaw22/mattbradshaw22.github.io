@@ -25,7 +25,7 @@ Welcome to my computer science ePortfolio. This portfolio documents my growth th
 ## Informal Code Review
 ---
 
-You can check out my [code review](https://youtu.be/GWwUaSfZF6c) video on youtube and see the analysis of the original artifact and the discussion about the planned enhancements.
+### You can check out my [code review](https://youtu.be/GWwUaSfZF6c) video on youtube and see the analysis of the original artifact and the discussion about the planned enhancements.
 ---
 ## Original Artifact and Project Overview
 ---
