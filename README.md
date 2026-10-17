@@ -20,44 +20,12 @@ Welcome to my computer science ePortfolio. This portfolio documents my growth th
 
 ## Professional Self-Assessment
 ---
-A
-S
-D
-F
-G
-HJ
-K
-L
-;
-Q
-W
-E
-R
-T
-Y
-U
-IO
-P
-M
-N
-B
-V
-C
-X
-ZA
-Q
-W
-S
-FD
-G
-D
-G
-
+  
 ---
 ## Informal Code Review
 ---
 
-this is my [code review](https://youtu.be/GWwUaSfZF6c).
+You can check out my [code review](https://youtu.be/GWwUaSfZF6c) video on youtube and see the analysis of the original artifact and the discussion about the planned enhancements.
 ---
 ## Original Artifact and Project Overview
 ---
