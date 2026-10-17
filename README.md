@@ -23,6 +23,7 @@ Welcome to my computer science ePortfolio. This portfolio documents my growth th
 ---
 ## Informal Code Review
 
+this is my [code review](https://youtu.be/GWwUaSfZF6c).
 ---
 ## Original Artifact and Project Overview
 
@@ -36,6 +37,5 @@ Welcome to my computer science ePortfolio. This portfolio documents my growth th
 ## Enhancement Three: Databases
 
 ---
-this is my [code review](https://youtu.be/GWwUaSfZF6c).
 
 the web application is hosted live at [matthiasbradshaw.com](https://matthiasbradshaw.com) through a VS Code dev tunnel.
