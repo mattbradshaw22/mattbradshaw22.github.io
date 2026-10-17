@@ -19,22 +19,60 @@ Welcome to my computer science ePortfolio. This portfolio documents my growth th
 ---
 
 ## Professional Self-Assessment
+---
+A
+S
+D
+F
+G
+HJ
+K
+L
+;
+Q
+W
+E
+R
+T
+Y
+U
+IO
+P
+M
+N
+B
+V
+C
+X
+ZA
+Q
+W
+S
+FD
+G
+D
+G
 
 ---
 ## Informal Code Review
+---
 
 this is my [code review](https://youtu.be/GWwUaSfZF6c).
 ---
 ## Original Artifact and Project Overview
+---
 
 ---
 ## Enhancement One: Software Design and Engineering
+---
 
 ---
 ## Enhancement Two: Algorithms and Data Structures
+---
 
 ---
 ## Enhancement Three: Databases
+---
 
 ---
 
