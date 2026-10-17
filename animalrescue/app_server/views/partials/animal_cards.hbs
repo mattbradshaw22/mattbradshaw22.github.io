@@ -1,0 +1,62 @@
+{{!--
+  Animal Cards Partial
+  Renders a responsive card grid for any animals collection passed to the view.
+--}}
+
+{{!-- Animal Grid --}}
+<div class="animal-grid">
+  {{#each animals}}
+    {{!-- Individual Animal Card --}}
+    <article class="animal-card">
+      {{#if imagePath}}
+        {{!-- Animal Photo --}}
+        <div class="animal-photo">
+          <img src="{{imagePath}}" alt="{{name}}, a {{#if species}}{{species}}{{else}}{{breed}}{{/if}} {{animalType}}" loading="lazy">
+        </div>
+      {{else}}
+        <div class="animal-placeholder">
+          <small>No photo provided</small>
+        </div>
+      {{/if}}
+
+      {{!-- Animal Details --}}
+      <div class="animal-details">
+        <span class="tag">{{animalType}}</span>
+        <h3>{{name}}</h3>
+
+        {{#if species}}
+          <p>{{species}}</p>
+        {{else}}
+          {{#if breed}}<p>{{breed}}</p>{{/if}}
+        {{/if}}
+
+        {{!-- Animal Facts List --}}
+        <dl class="animal-facts">
+          {{#if species}}<div><dt>Species</dt><dd>{{species}}</dd></div>{{/if}}
+          {{#if breed}}{{#unless species}}<div><dt>Breed</dt><dd>{{breed}}</dd></div>{{/unless}}{{/if}}
+          {{#if gender}}<div><dt>Gender</dt><dd>{{gender}}</dd></div>{{/if}}
+          {{#if age}}<div><dt>Age</dt><dd>{{age}}</dd></div>{{/if}}
+          {{#if weight}}<div><dt>Weight</dt><dd>{{weight}}</dd></div>{{/if}}
+          {{#if tailLength}}<div><dt>Tail Length</dt><dd>{{tailLength}}</dd></div>{{/if}}
+          {{#if height}}<div><dt>Height</dt><dd>{{height}}</dd></div>{{/if}}
+          {{#if bodyLength}}<div><dt>Body Length</dt><dd>{{bodyLength}}</dd></div>{{/if}}
+          {{#if acquisitionDate}}<div><dt>Acquisition Date</dt><dd>{{acquisitionDate}}</dd></div>{{/if}}
+          {{#if acquisitionLocation}}
+            <div><dt>Acquisition City</dt><dd>{{acquisitionLocation.city}}</dd></div>
+            <div><dt>Acquisition State</dt><dd>{{acquisitionLocation.state}}</dd></div>
+            <div><dt>Acquisition Country</dt><dd>{{acquisitionLocation.country}}</dd></div>
+          {{/if}}
+          {{#if trainingStatus}}<div><dt>Training Status</dt><dd>{{trainingStatus}}</dd></div>{{/if}}
+          {{#if graduationDate}}<div><dt>Graduation Date</dt><dd>{{graduationDate}}</dd></div>{{/if}}
+          <div><dt>Reserved</dt><dd>{{#if reserved}}Yes{{else}}No{{/if}}</dd></div>
+        </dl>
+      </div>
+    </article>
+  {{else}}
+    {{!-- Empty State --}}
+    <div class="empty-state">
+      <h2>No animals found.</h2>
+      <p>No animal records are available yet.</p>
+    </div>
+  {{/each}}
+</div>

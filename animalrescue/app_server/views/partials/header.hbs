@@ -1,0 +1,71 @@
+{{!--
+  Header Partial
+  Used on all pages. The home, about, intake, find, and all variables are set
+  in route controllers so the current navigation link can be highlighted.
+--}}
+
+{{!-- Site Header and Navigation --}}
+<header class="site-header wrap">
+    <a class="brand" href="/">
+        <img class="brand-logo" src="/images/grazioso_salvare_logo.png" alt="Grazioso Salvare">
+        <span>Animal Rescue System</span>
+    </a>
+
+    <nav>
+        <a href="/" class="{{#if home}}active{{/if}}">Home</a>
+        <a href="/about" class="{{#if about}}active{{/if}}">About</a>
+        <a href="/animal-intake" class="{{#if intake}}active{{/if}}">Animal Intake</a>
+        <a href="/find-an-animal" class="{{#if find}}active{{/if}}">Find an Animal</a>
+        <a href="/rescue_animals" class="{{#if all}}active{{/if}}">See All Animals</a> 
+        <span id="auth-nav">
+            <a href="/login" class="{{#if login}}active{{/if}}">Login</a>
+        </span>
+    </nav>
+</header>
+
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const authNav = document.getElementById('auth-nav');
+    const token = localStorage.getItem('AR-token');
+
+    if (!authNav) {
+      return;
+    }
+
+    if (token) {
+      try {
+        const payload = JSON.parse(atob(token.split('.')[1]));
+
+        const tokenIsValid =
+          payload.exp &&
+          payload.exp > (Date.now() / 1000);
+
+        if (tokenIsValid) {
+          authNav.innerHTML =
+            '<a href="#" id="logout-link">Logout</a>';
+
+          document
+            .getElementById('logout-link')
+            .addEventListener('click', function (event) {
+              event.preventDefault();
+
+              localStorage.removeItem('AR-token');
+
+              window.location.href = '/';
+            });
+
+          return;
+        }
+      } catch (error) {
+        console.log('Invalid token stored in browser.');
+      }
+
+      localStorage.removeItem('AR-token');
+    }
+
+    authNav.innerHTML =
+      '<a href="/login">Login</a>';
+  });
+</script>

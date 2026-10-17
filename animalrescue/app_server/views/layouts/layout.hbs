@@ -1,0 +1,22 @@
+{{!--
+  Main Layout
+  Wraps every page with shared document structure, header, footer, and styles.
+--}}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  {{!-- Document Metadata --}}
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{title}} | Rescue Animal Services</title>
+  <link rel="stylesheet" href="/stylesheets/style.css">
+</head>
+<body>
+  {{!-- Shared Page Structure --}}
+  <a class="skip-link" href="#main">Skip to content</a>
+  {{> header}}
+  <main id="main" class="wrap">{{{body}}}</main>
+  {{> footer}}
+</body>
+</html>
