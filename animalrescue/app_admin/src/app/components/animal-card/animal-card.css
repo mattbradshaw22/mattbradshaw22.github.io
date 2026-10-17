@@ -1,0 +1,30 @@
+.animal-card {
+  display: flex;
+  gap: 24px;
+  margin-top: 24px;
+  padding: 20px;
+  border: 1px solid #ccc;
+}
+
+.animal-image img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+}
+
+.no-image {
+  width: 220px;
+  height: 220px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #ccc;
+}
+
+.animal-info h3 {
+  margin-top: 0;
+}
+
+.animal-info p {
+  margin: 6px 0;
+}

@@ -1,0 +1,57 @@
+<section>
+  <h2>Find a Service Animal Near Me</h2>
+
+  <p>
+    Enter a ZIP code to find available service animals near your location.
+  </p>
+
+  <div>
+    <label for="zipCode">ZIP Code </label>
+
+    <input
+      id="zipCode"
+      type="text"
+      maxlength="5"
+      [formControl]="searchZip"
+      (keyup.enter)="findNearbyAnimals()"
+    >
+
+    <button
+      type="button"
+      (click)="findNearbyAnimals()"
+      [disabled]="searching"
+    >
+      {{ searching ? 'Searching...' : 'Search' }}
+    </button>
+  </div>
+
+  <p *ngIf="searchError">
+    {{ searchError }}
+  </p>
+
+  <div *ngIf="nearbyAnimals.length > 0">
+    <h3>
+      {{ nearbyAnimals.length }} Available Animals Found
+    </h3>
+
+    <div *ngFor="let animal of nearbyAnimals">
+
+      <h4>
+        #{{ animal.resultPosition }} Match
+      </h4>
+
+      <p>
+        Rank: {{ animal.rank }} / 5
+      </p>
+
+      <p>
+        {{ animal.distanceMiles }} miles away
+      </p>
+
+      <app-animal-card
+        [animal]="animal">
+      </app-animal-card>
+
+    </div>
+  </div>
+</section>

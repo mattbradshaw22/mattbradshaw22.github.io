@@ -1,0 +1,77 @@
+<div class="animal-card">
+
+  <div class="animal-image">
+
+    <img
+      *ngIf="animal.imagePath"
+      [src]="animal.imagePath"
+      [alt]="animal.name"
+    >
+
+    <div
+      *ngIf="!animal.imagePath"
+      class="no-image"
+    >
+      No photo available
+    </div>
+
+  </div>
+
+  <div class="animal-info">
+
+    <h3>{{ animal.name }}</h3>
+
+    <p>
+      <strong>Animal Type:</strong>
+      {{ animal.animalType }}
+    </p>
+
+    <p>
+      <strong>Breed:</strong>
+      {{ animal.breed }}
+    </p>
+
+    <p *ngIf="animal.species">
+      <strong>Species:</strong>
+      {{ animal.species }}
+    </p>
+
+    <p>
+      <strong>Gender:</strong>
+      {{ animal.gender }}
+    </p>
+
+    <p>
+      <strong>Age:</strong>
+      {{ animal.age }}
+    </p>
+
+    <p>
+      <strong>Weight:</strong>
+      {{ animal.weight }} lbs
+    </p>
+
+    <p>
+      <strong>Training Status:</strong>
+      {{ animal.trainingStatus }}
+    </p>
+
+    <p>
+      <strong>Reserved:</strong>
+      {{ animal.reserved ? 'Yes' : 'No' }}
+    </p>
+
+    <p>
+      <strong>Location:</strong>
+      {{ animal.acquisitionLocation.city }},
+      {{ animal.acquisitionLocation.state }}
+    </p>
+
+    <p *ngIf="animal.description">
+      <strong>Description:</strong>
+      {{ animal.description }}
+    </p>
+
+  </div>
+
+</div>

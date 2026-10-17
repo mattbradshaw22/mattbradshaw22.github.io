@@ -1,0 +1,45 @@
+
+<section>
+  <h2>Find an Animal by Name</h2>
+<!-- TODO Restyle Page Layout Later -->
+  <p>
+    Search for an animal by its name using the input field below.
+  </p>
+
+  <div>
+    <label for="animalName"> Animal Name </label>
+
+    <input
+      id="animalName"
+      type="text"
+      [formControl]="searchName"
+      (keyup.enter)="findAnimalByName()"
+    >
+
+    <button
+      type="button"
+      (click)="findAnimalByName()"
+      [disabled]="searching"
+    >
+      {{ searching ? 'Searching...' : 'Search' }}
+    </button>
+  </div>
+
+  <p *ngIf="searchError">
+    {{ searchError }}
+  </p>
+
+  <app-animal-card
+    *ngIf="selectedAnimal" 
+    [animal]="selectedAnimal">
+  </app-animal-card>
+  
+</section>
+
+<hr>
+
+<section>
+  
+  <app-find-nearby-animal></app-find-nearby-animal>
+
+</section>
