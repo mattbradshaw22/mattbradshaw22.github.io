@@ -42,7 +42,7 @@ Welcome to my computer science ePortfolio. This portfolio documents my growth th
 ---
 # Original Artifact and Project Overview
 
-  The artifact I selected for my CS 499 capstone was the [Animal Rescue System]([url](https://github.com/mattbradshaw22/IT-145) I originally developed in IT 145 Foundation in Application Development. This was one of my earliest programming projects at SNHU, making it an ideal choice to demonstrate how much my technical knowledge and software development skills have progressed throughout the Computer Science program.
+  The artifact I selected for my CS 499 capstone was the [Animal Rescue System](https://github.com/mattbradshaw22/IT-145) I originally developed in IT 145 Foundation in Application Development. This was one of my earliest programming projects at SNHU, making it an ideal choice to demonstrate how much my technical knowledge and software development skills have progressed throughout the Computer Science program.
   
   The original application was written in Java and operated entirely through a console based interface. It was designed to manage rescue animals, specifically dogs and monkeys, by allowing users to intake new animals, display lists of available animals, and reserve animals for service. The application used object oriented programming principles, including classes, inheritance, and collections, to organize animal information and manage the different operations.
   
