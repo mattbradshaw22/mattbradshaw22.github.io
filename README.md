@@ -58,4 +58,4 @@ Welcome to my computer science ePortfolio. This portfolio documents my growth th
 
 ---
 
-the web application is hosted live at [matthiasbradshaw.com](https://matthiasbradshaw.com) through a VS Code dev tunnel.
+You can check out the Repository of the final product on [my Github page](https://github.com/mattbradshaw22/CS-499-project) or the the web application may be hosted live at [matthiasbradshaw.com](https://matthiasbradshaw.com) through a VS Code dev tunnel. 
