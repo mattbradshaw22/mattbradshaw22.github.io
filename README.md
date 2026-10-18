@@ -236,7 +236,74 @@ const getDistanceRank = (distanceMiles) => {
 
   I replaced this approach with MongoDB, a NoSQL document database, and connected it to the Express backend using Mongoose. I designed schemas to represent rescue animal information, including an animal's name, type, age, weight, gender, acquisition location, service status, and reservation status. Additional fields accommodate information specific to dogs and monkeys. This structure allowed the application to store animal records persistently while maintaining consistency in the information submitted through the intake form.
 
+  ```javascript
+const locationSchema = new mongoose.Schema({
+    city: { type: String, required: true },
+    state: { type: String },
+    country: { type: String, required: true },
+    latitude: { type: Number, required: true },
+    longitude: { type: Number, required: true }
+});
+```
+
+```javascript
+const animalSchema = new mongoose.Schema({
+
+    name: { type: String, required: true },
+    animalType: { type: String, enum: ['Dog', 'Monkey'], required: true },
+    breed: { type: String, required: true },
+    species: { type: String },
+    gender: { type: String, required: true },
+    age: { type: Number, required: true },
+    weight: { type: Number, required: true },
+    acquisitionDate: { type: Date, required: true },
+    acquisitionLocation: { type: locationSchema, required: true },
+    trainingStatus: { type: String, 
+        enum: ['Intake', 'In Training', 'Phase 2', 'Phase 3', 'Phase 4', 'Completed', 'In Service'], 
+        required: true },
+    reserved: { type: Boolean, default: false },
+    graduationDate: { type: Date },
+    description: { type: String },
+
+    // Additional fields used by monkey records.
+    // These are optional because dog records do not use them.
+    tailLength: { type: Number },
+    height: { type: Number },
+    bodyLength: { type: Number }
+});
+
+```
+
   I also implemented RESTful API endpoints that allow the Angular frontend to communicate with the Express backend and MongoDB database. The animal intake form now submits information through an API request, allowing new animal records to be created in MongoDB. The search functionality also retrieves animal information through the API rather than relying on the hard coded data structures used in the original application.
+
+  ```javascript
+// GET: /api/animals
+  // Retrieves all rescue animal records.
+  getAnimals(): Observable<Animal[]> {
+    return this.http.get<Animal[]>(this.animalsUrl);
+  }
+
+  // POST: /api/animals
+  // Adds a new rescue animal record.
+  addAnimal(animal: Animal): Observable<Animal> {
+    return this.http.post<Animal>(this.animalsUrl, animal);
+  }
+
+  // GET: /api/animals/name/:name
+  // Retrieves a specific rescue animal record by name.
+  getAnimalByName(name: string): Observable<Animal> {
+    return this.http.get<Animal>(`${this.animalsUrl}/name/${encodeURIComponent(name)}`);
+  }
+
+  // GET: /api/animals/nearby/:zip
+  // Retrieves available rescue animals ranked by distance
+  // from the user's ZIP code.
+  getNearbyAnimals(zip: string): Observable<NearbyAnimalResponse> {
+    return this.http.get<NearbyAnimalResponse>(
+      `${this.animalsUrl}/nearby/${encodeURIComponent(zip)}`
+    );
+  }
+```
 
   Another major component of this enhancement was implementing user registration and authentication. I created functionality for users to register accounts, log in, and receive JSON Web Tokens (JWTs) to authenticate subsequent requests. I also implemented route protection so that users attempting to access the intake page without being logged in are redirected to the login page.
 
