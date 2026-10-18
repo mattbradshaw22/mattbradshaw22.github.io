@@ -69,9 +69,161 @@ I also developed an animal intake form with input validation to help ensure that
 
   For my second enhancement, I focused on algorithms and data structures by improving how users could search for and identify suitable rescue animals. In the original Java application, the reservation functionality simply searched through the animal collection until it found the first matching animal that was not already reserved. While this approach worked for the original requirements, it did not consider whether an animal was geographically close to the user or provide a way to compare multiple possible matches.
   
-  I enhanced the application by implementing a “search by name” feature and a nearby animal search that uses geographic coordinates to determine the distance between a user's location and the animals stored in the database. I also added functionality to display a randomly selected animal on the homepage. The nearby search required several steps. First, I used the JavaScript zipcodes package to convert a user entered ZIP code into latitude and longitude coordinates. I then applied the Haversine formula to calculate the distance between those coordinates and each animal's recorded location. The application filters out reserved animals, assigns each remaining animal a proximity ranking based on its calculated distance, and sorts the results so that the closest and most relevant animals appear first.
+  I enhanced the application by implementing a “search by name” feature and a nearby animal search that uses geographic coordinates to determine the distance between a user's location and the animals stored in the database. I also added functionality to display a randomly selected animal on the homepage. The nearby search required several steps. First, I used the JavaScript zipcodes package to convert a user entered ZIP code into latitude and longitude coordinates. 
   
-  One of the most valuable aspects of this enhancement was evaluating the algorithm's time complexity and understanding the trade offs involved. Filtering and calculating distances across the animal collection each require linear processing, or O(n), while sorting the results introduces an O(n log n) component in the average case analysis. Although this process requires more computation than the original linear search for the first available animal, it provides significantly more useful information and gives users greater flexibility when selecting an animal. 
+  ```javascript
+const animalsFindNearby = async (req, res) => {
+    try {
+        const zip = req.params.zip.trim();
+
+        // Validate that the user supplied a five-digit ZIP code.
+        if (!/^\d{5}$/.test(zip)) {
+            return res.status(400).json({
+                message: 'Please enter a valid five-digit ZIP code.'
+            });
+        }
+
+        // zipcodes-us is an ES module, so it is loaded dynamically
+        // from this CommonJS Express controller.
+        const zipcodesModule = await import('zipcodes-us');
+        const zipcodes = zipcodesModule.default;
+        // pass the ZIP code to the zipcodes-us library to get the coordinates
+        const coordinates = zipcodes.findCoordinates(zip);
+
+        if (!coordinates.isValid) {
+            return res.status(400).json({
+                message: `ZIP code "${zip}" was not found.`
+            });
+        }
+```
+  
+  The algorithm I used below calculates the distance in miles between two latitude/longitude points
+ using the [Haversine formula](https://en.wikipedia.org/wiki/Haversine_formula) which I came across in researching ways to compare coordinate locations to determine distance.
+
+```javascript
+const calculateDistanceMiles = (lat1, lon1, lat2, lon2) => {
+
+    const earthRadiusMiles = 3958.8;
+
+    const latitudeDifference = toRadians(lat2 - lat1);
+    const longitudeDifference = toRadians(lon2 - lon1);
+
+    const firstLatitude = toRadians(lat1);
+    const secondLatitude = toRadians(lat2);
+
+    const a =
+        Math.sin(latitudeDifference / 2) *
+        Math.sin(latitudeDifference / 2) +
+        Math.cos(firstLatitude) *
+        Math.cos(secondLatitude) *
+        Math.sin(longitudeDifference / 2) *
+        Math.sin(longitudeDifference / 2);
+
+    const c = 2 * Math.atan2(
+        Math.sqrt(a),
+        Math.sqrt(1 - a)
+    );
+
+    return earthRadiusMiles * c;
+};
+```
+  
+  The application filters out reserved animals, assigns each remaining animal a proximity ranking based on its calculated distance, and sorts the results so that the closest and most relevant animals appear first.
+
+```javascript
+
+        // Retrieve only animals that are currently available.
+        const animals = await Model
+            .find({ reserved: false })
+            .lean()  // return plain JavaScript objects instead of Mongoose documents
+            .exec();
+
+        // Calculate the distance and rank for each available animal.
+        const rankedAnimals = animals
+            .map((animal) => {
+
+                const distanceMiles = calculateDistanceMiles(
+                    coordinates.latitude,
+                    coordinates.longitude,
+                    animal.acquisitionLocation.latitude,
+                    animal.acquisitionLocation.longitude
+                );
+
+                const rank = getDistanceRank(distanceMiles);
+
+                return {
+                    ...animal,
+                    distanceMiles: distanceMiles,
+                    rank: rank
+                };
+            })
+
+            // Animals more than 2,000 miles away receive rank 0
+            // and are excluded from the results.
+            .filter((animal) => animal.rank > 0)
+
+            // Sort higher-ranked animals first.
+            // If two animals have the same rank, the closer animal comes first.
+            .sort((a, b) => {
+
+                if (b.rank !== a.rank) {
+                    return b.rank - a.rank;
+                }
+
+                return a.distanceMiles - b.distanceMiles;
+            })
+
+            // Give each sorted result a display position.
+            .map((animal, index) => ({
+                ...animal,
+                distanceMiles: Number(animal.distanceMiles.toFixed(2)),  // round to two decimal places
+                resultPosition: index + 1
+            }));
+
+
+        return res.status(200).json({
+            zip: zip,
+
+            userLocation: {
+                latitude: coordinates.latitude,
+                longitude: coordinates.longitude
+            },
+
+            resultCount: rankedAnimals.length,
+
+            animals: rankedAnimals
+        });
+```
+This is the function from the above snippet I used to rank unreserved animals by the distance of the user's entered zip code and the unreserved animals location in the database.
+```javascript
+// Assigns a match rank based on the animal's distance from the user.
+const getDistanceRank = (distanceMiles) => {
+
+    if (distanceMiles < 100) {
+        return 5;
+    }
+
+    if (distanceMiles <= 250) {
+        return 4;
+    }
+
+    if (distanceMiles <= 500) {
+        return 3;
+    }
+
+    if (distanceMiles <= 1000) {
+        return 2;
+    }
+
+    if (distanceMiles <= 2000) {
+        return 1;
+    }
+
+    return 0;
+};
+```
+  
+  One of the most valuable aspects of this enhancement was evaluating the algorithm's time complexity and understanding the trade offs involved. Filtering and calculating distances across the animal collection each require linear processing, or O(n), while sorting the results introduces an O(n log n) component in the average case analysis. Although this process requires more computation than the original linear search for the first available animal, it provides significantly more useful information and gives users greater flexibility when selecting an animal. With a database of about 40 animals the search function is reasonably fast but as the number of entries increase the O(n log n) complexity increases drastically as the number of entries increase. That's why one of the first things I did in the function was to remove any reserved animals from the before calculating distance and ranking the animals as that can help cut down the number of entries as they wouldn't be usable anyway.  
   
   I also gained experience working with arrays of objects, filtering and mapping data, sorting with comparison functions, and researching mathematical solutions to real world programming problems. The Haversine formula was particularly interesting because it allowed me to apply mathematical principles to a practical feature that improves the user experience.
   
