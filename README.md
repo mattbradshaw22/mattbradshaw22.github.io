@@ -59,6 +59,11 @@ Welcome to my computer science ePortfolio. This portfolio documents my growth th
 
   I used Express and Node.js to establish the backend web application and created pages for the homepage, animal listings, and information about the rescue system. I also incorporated Angular components for more interactive functionality, including the animal intake and search pages. One of my main design goals was to maintain a consistent user experience throughout the application while keeping the code organized and reusable.
 
+  Here are some images of the main aspects I designed and engineered of the web application.
+  ![Home](images/Home.PNG)
+  ![FindNearby](images/FindNearby.PNG)
+  ![IntakeForm-Dog](images/IntakeForm-Dog.PNG)
+  
   One of the biggest challenges I encountered was integrating the Angular single page application into the existing Express website. Rather than recreating the navigation bar, header, and footer separately for Angular, I wanted the Angular components to display within the Express page structure. This required me to learn more about routing, frontend integration, and how the two frameworks could work together without unnecessarily duplicating code.
 I also developed an animal intake form with input validation to help ensure that submitted information followed the expected data structure. This was important preparation for the database integration I planned to complete in later enhancements. By considering the requirements of future functionality early in development, I was able to establish a foundation that could support additional features without completely redesigning the application.
   
